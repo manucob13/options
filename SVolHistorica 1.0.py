@@ -61,6 +61,10 @@ monthly_long['Mes'] = pd.Categorical(monthly_long['Mes'], categories=orden_meses
 vol_mm = data['vol'].resample('ME').mean()
 vol_mm = vol_mm[vol_mm.index >= f"{anio_inicio}-01-01"]
 
+# --- Tabla con los promedios
+st.subheader("📊 Volatilidad Mensual y Anual Promedio")
+st.dataframe(monthly_vol.style.format("{:.2%}"), use_container_width=True)
+
 # --- Gráfico 1: Volatilidad Anual ---
 fig1, ax1 = plt.subplots(figsize=(10, 5))
 monthly_vol['Anual'] = pd.to_numeric(monthly_vol['Anual'], errors='coerce')
