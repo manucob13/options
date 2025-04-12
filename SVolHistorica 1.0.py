@@ -82,7 +82,7 @@ st.subheader("📊 Volatilidad Mensual y Anual Promedio")
 st.dataframe(monthly_vol.style.format("{:.2%}"), use_container_width=True)
 
 # --- Gráfico 1: Volatilidad Anual ---
-fig1, ax1 = plt.subplots(figsize=(20, 10))
+fig1, ax1 = plt.subplots(figsize=(12, 7))
 monthly_vol['Anual'] = pd.to_numeric(monthly_vol['Anual'], errors='coerce')
 monthly_vol['Anual'].dropna().plot(kind='bar', color='steelblue', ax=ax1)
 ax1.set_title(f'Volatilidad Anual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today')
