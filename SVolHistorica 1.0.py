@@ -49,7 +49,7 @@ annual_vol = data[data['year'] >= anio_inicio].groupby('year')['vol'].mean()
 monthly_vol['Anual'] = annual_vol
 monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
 monthly_vol.columns = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 
-                       'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc', 'T']
+                       'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc', 'Anual']
 
 st.dataframe(monthly_vol.style.format("{:.2f}"), use_container_width=True)
 
