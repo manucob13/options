@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Configuración de estilo
 sns.set_theme(style='whitegrid')
-st.set_page_config(layout="wide", page_title="Volatilidad Histórica")
+st.set_page_config(layout="centered", page_title="Volatilidad Histórica")
 
 # --- Entradas de usuario ---
 st.title("📈 Volatilidad Histórica del Mercado")
@@ -52,13 +52,20 @@ monthly_vol.columns = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
                        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Anual']
 
 st.subheader("📊 Volatilidad Mensual y Anual Promedio")
-st.dataframe(
+
+# Crear tabla HTML estilizada
+styled_table = (
     monthly_vol.style
         .format("{:.2%}")
-        .highlight_max(axis=1, color='lightgreen')  # resalta valor más alto por año
-        .background_gradient(cmap='YlGnBu'),        # gradiente de color visual
-    use_container_width=True
+        .highlight_max(axis=1, color='lightgreen')
+        .background_gradient(cmap='YlGnBu')
+        .set_table_attributes('style="width:100%;border-collapse:collapse;font-size:14px;"')
+        .to_html()
 )
+
+# Mostrarla como HTML para evitar scroll y respetar layout='centered'
+st.markdown(styled_table, unsafe_allow_html=True)
+
 
 # --- Crear monthly_long ---
 monthly_long = monthly_vol.reset_index().melt(id_vars=['year'], value_vars=monthly_vol.columns[:-1])
