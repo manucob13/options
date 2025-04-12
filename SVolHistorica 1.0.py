@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Configuración de estilo
 sns.set_theme(style='whitegrid')
-st.set_page_config(layout="centered", page_title="Volatilidad Histórica")
+st.set_page_config(layout="wide", page_title="Volatilidad Histórica")
 
 # --- Entradas de usuario ---
 st.title("📈 Volatilidad Histórica del Mercado")
