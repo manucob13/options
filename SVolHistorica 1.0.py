@@ -44,12 +44,13 @@ data['month'] = data.index.month
 
 # --- Volatilidad mensual y anual ---
 monthly_vol = data[data['year'] >= anio_inicio].groupby(['year', 'month'])['vol'].mean().unstack()
-annual_vol = data[data['year'] >= anio_inicio].groupby('year')['vol'].mean()
+monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12]]  # Asegura orden de meses
+monthly_vol = monthly_vol.copy()
 
-monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12]]  # Ordenar los meses
-monthly_vol['Anual'] = annual_vol  # Añadir columna anual
+# Calcular la volatilidad anual por año como promedio de los meses
+monthly_vol['Anual'] = monthly_vol.mean(axis=1)
 
-# Renombrar columnas
+# Renombrar columnas de meses a dos letras
 monthly_vol.columns = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 
                        'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc', 'Anual']
 
@@ -100,19 +101,4 @@ st.pyplot(fig2)
 
 # --- Gráfico 3: Volatilidad mensual promedio continua ---
 fig3, ax3 = plt.subplots(figsize=(6, 3))
-ax3.plot(vol_mm.index, vol_mm.values, marker='o', linestyle='-', color='darkblue', linewidth=2, alpha=0.9)
-ax3.set_title(f'Volatilidad Mensual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today', fontsize=16)
-ax3.set_ylabel('Volatilidad')
-ax3.grid(axis='y', linestyle='--', alpha=0.5)
-plt.xticks(rotation=45)
-st.pyplot(fig3)
-
-# --- Gráfico 4: Precio del instrumento ---
-fig4, ax4 = plt.subplots(figsize=(6, 3))
-data1 = data[data['year'] >= anio_inicio]
-ax4.plot(data1.index, data1[ticker], color='black', linewidth=1, alpha=0.8)
-ax4.set_title(f'{ticker} {anio_inicio}-Today', fontsize=16)
-ax4.set_ylabel('Precio de Cierre')
-ax4.grid(axis='y', linestyle='--', alpha=0.6)
-plt.xticks(rotation=45)
-st.pyplot(fig4)
+ax3.plot(vol_mm.index, vol_mm.values, marker='o', linestyle='-', color='darkblue', linewidth=2,
