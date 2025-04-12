@@ -35,7 +35,9 @@ start_date = f"{anio_inicio}-01-01"
 end_date = datetime.today().strftime('%Y-%m-%d')
 data = market_data(ticker, start_date, end_date)
 data['log_return'] = np.log(data[ticker] / data[ticker].shift(1))
-data['vol'] = data['log_return'].rolling(window=ventana_vol).std()
+
+# Volatilidad en porcentaje
+data['vol'] = data['log_return'].rolling(window=ventana_vol).std() * 100
 data = data.dropna()
 
 # --- Datos temporales para resampling ---
@@ -44,17 +46,12 @@ data['month'] = data.index.month
 
 # --- Volatilidad mensual y anual ---
 monthly_vol = data[data['year'] >= anio_inicio].groupby(['year', 'month'])['vol'].mean().unstack()
-monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12]]  # Asegura orden de meses
-monthly_vol = monthly_vol.copy()
-
-# Calcular la volatilidad anual por año como promedio de los meses
-monthly_vol['Anual'] = monthly_vol.mean(axis=1)
-
-# Renombrar columnas de meses a dos letras
+annual_vol = data[data['year'] >= anio_inicio].groupby('year')['vol'].mean()
+monthly_vol['Anual'] = annual_vol
+monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
 monthly_vol.columns = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 
                        'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc', 'Anual']
 
-# Mostrar tabla
 st.dataframe(monthly_vol.style.format("{:.2f}"), use_container_width=True)
 
 # --- Crear monthly_long ---
@@ -72,7 +69,7 @@ fig1, ax1 = plt.subplots(figsize=(12, 7))
 monthly_vol['Anual'] = pd.to_numeric(monthly_vol['Anual'], errors='coerce')
 monthly_vol['Anual'].dropna().plot(kind='bar', color='steelblue', ax=ax1)
 ax1.set_title(f'Volatilidad Anual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today')
-ax1.set_ylabel('Volatilidad')
+ax1.set_ylabel('Volatilidad (%)')
 ax1.grid(axis='y', linestyle='--', alpha=0.5)
 st.pyplot(fig1)
 
@@ -93,7 +90,7 @@ for year in anios_previos:
              color=colores[year], linewidth=2)
 ax2.set_title(f'Volatilidad Mensual ({ventana_vol}d) - {ticker} {anio_inicio}-Today', fontsize=16)
 ax2.set_xlabel('Mes')
-ax2.set_ylabel('Volatilidad Promedio')
+ax2.set_ylabel('Volatilidad Promedio (%)')
 ax2.legend(title='Año', bbox_to_anchor=(1.05, 1), loc='upper left')
 ax2.grid(axis='y', linestyle='--', alpha=0.6)
 plt.xticks(rotation=45)
@@ -103,7 +100,7 @@ st.pyplot(fig2)
 fig3, ax3 = plt.subplots(figsize=(6, 3))
 ax3.plot(vol_mm.index, vol_mm.values, marker='o', linestyle='-', color='darkblue', linewidth=2, alpha=0.9)
 ax3.set_title(f'Volatilidad Mensual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today', fontsize=16)
-ax3.set_ylabel('Volatilidad')
+ax3.set_ylabel('Volatilidad (%)')
 ax3.grid(axis='y', linestyle='--', alpha=0.5)
 plt.xticks(rotation=45)
 st.pyplot(fig3)
