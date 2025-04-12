@@ -101,4 +101,19 @@ st.pyplot(fig2)
 
 # --- Gráfico 3: Volatilidad mensual promedio continua ---
 fig3, ax3 = plt.subplots(figsize=(6, 3))
-ax3.plot(vol_mm.index, vol_mm.values, marker='o', linestyle='-', color='darkblue', linewidth=2,
+ax3.plot(vol_mm.index, vol_mm.values, marker='o', linestyle='-', color='darkblue', linewidth=2, alpha=0.9)
+ax3.set_title(f'Volatilidad Mensual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today', fontsize=16)
+ax3.set_ylabel('Volatilidad')
+ax3.grid(axis='y', linestyle='--', alpha=0.5)
+plt.xticks(rotation=45)
+st.pyplot(fig3)
+
+# --- Gráfico 4: Precio del instrumento ---
+fig4, ax4 = plt.subplots(figsize=(6, 3))
+data1 = data[data['year'] >= anio_inicio]
+ax4.plot(data1.index, data1[ticker], color='black', linewidth=1, alpha=0.8)
+ax4.set_title(f'{ticker} {anio_inicio}-Today', fontsize=16)
+ax4.set_ylabel('Precio de Cierre')
+ax4.grid(axis='y', linestyle='--', alpha=0.6)
+plt.xticks(rotation=45)
+st.pyplot(fig4)
