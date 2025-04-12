@@ -51,6 +51,15 @@ monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
 monthly_vol.columns = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
                        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Anual']
 
+st.subheader("📊 Volatilidad Mensual y Anual Promedio")
+st.dataframe(
+    monthly_vol.style
+        .format("{:.2%}")
+        .highlight_max(axis=1, color='lightgreen')  # resalta valor más alto por año
+        .background_gradient(cmap='YlGnBu'),        # gradiente de color visual
+    use_container_width=True
+)
+
 # --- Crear monthly_long ---
 monthly_long = monthly_vol.reset_index().melt(id_vars=['year'], value_vars=monthly_vol.columns[:-1])
 monthly_long.columns = ['year', 'Mes', 'Volatilidad']
