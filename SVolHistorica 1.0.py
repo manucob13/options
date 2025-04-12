@@ -62,7 +62,7 @@ vol_mm = data['vol'].resample('ME').mean()
 vol_mm = vol_mm[vol_mm.index >= f"{anio_inicio}-01-01"]
 
 # --- Gráfico 1: Volatilidad Anual ---
-fig1, ax1 = plt.subplots(figsize=(10, 4))
+fig1, ax1 = plt.subplots(figsize=(6, 3))
 monthly_vol['Anual'] = pd.to_numeric(monthly_vol['Anual'], errors='coerce')
 monthly_vol['Anual'].dropna().plot(kind='bar', color='steelblue', ax=ax1)
 ax1.set_title(f'Volatilidad Anual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today')
@@ -80,7 +80,7 @@ for y in anios_previos:
     colores[y] = 'black' if y == ultimo_anio else paleta_colores[i]
     if y != ultimo_anio: i += 1
 
-fig2, ax2 = plt.subplots(figsize=(12, 6))
+fig2, ax2 = plt.subplots(figsize=(6, 3))
 for year in anios_previos:
     df_linea = monthly_long[monthly_long['year'] == year]
     ax2.plot(df_linea['Mes'], df_linea['Volatilidad'], marker='o', label=str(year),
@@ -94,7 +94,7 @@ plt.xticks(rotation=45)
 st.pyplot(fig2)
 
 # --- Gráfico 3: Volatilidad mensual promedio continua ---
-fig3, ax3 = plt.subplots(figsize=(14, 6))
+fig3, ax3 = plt.subplots(figsize=(6, 3))
 ax3.plot(vol_mm.index, vol_mm.values, marker='o', linestyle='-', color='darkblue', linewidth=2, alpha=0.9)
 ax3.set_title(f'Volatilidad Mensual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today', fontsize=16)
 ax3.set_ylabel('Volatilidad')
@@ -103,7 +103,7 @@ plt.xticks(rotation=45)
 st.pyplot(fig3)
 
 # --- Gráfico 4: Precio del instrumento ---
-fig4, ax4 = plt.subplots(figsize=(12, 5))
+fig4, ax4 = plt.subplots(figsize=(6, 3))
 data1 = data[data['year'] >= anio_inicio]
 ax4.plot(data1.index, data1[ticker], color='black', linewidth=1, alpha=0.8)
 ax4.set_title(f'{ticker} {anio_inicio}-Today', fontsize=16)
