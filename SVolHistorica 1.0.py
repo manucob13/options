@@ -52,7 +52,11 @@ monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
 monthly_vol.columns = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 
                        'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc', 'Anual']
 
-st.dataframe(monthly_vol.style.format("{:.2f}"), use_container_width=True)
+# Reemplazar NaNs por cadenas vacías para que no se muestre None
+monthly_vol_display = monthly_vol.copy()
+monthly_vol_display = monthly_vol_display.applymap(lambda x: "" if pd.isna(x) else f"{x:.2f}")
+
+st.dataframe(monthly_vol_display, use_container_width=True)
 
 # --- Crear monthly_long ---
 monthly_long = monthly_vol.reset_index().melt(id_vars=['year'], value_vars=monthly_vol.columns[:-1])
@@ -60,7 +64,7 @@ monthly_long.columns = ['year', 'Mes', 'Volatilidad']
 orden_meses = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc']
 monthly_long['Mes'] = pd.Categorical(monthly_long['Mes'], categories=orden_meses, ordered=True)
 
-# --- Promedio mensual continuo
+# --- Promedio mensual continuo ---
 vol_mm = data['vol'].resample('ME').mean()
 vol_mm = vol_mm[vol_mm.index >= f"{anio_inicio}-01-01"]
 
