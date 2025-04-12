@@ -56,7 +56,7 @@ st.dataframe(monthly_vol.style.format("{:.2f}"), use_container_width=True)
 # --- Crear monthly_long ---
 monthly_long = monthly_vol.reset_index().melt(id_vars=['year'], value_vars=monthly_vol.columns[:-1])
 monthly_long.columns = ['year', 'Mes', 'Volatilidad']
-orden_meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+orden_meses = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc']
 monthly_long['Mes'] = pd.Categorical(monthly_long['Mes'], categories=orden_meses, ordered=True)
 
 # --- Promedio mensual continuo
