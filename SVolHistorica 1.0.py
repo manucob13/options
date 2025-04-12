@@ -14,7 +14,7 @@ st.set_page_config(layout="centered", page_title="Volatilidad Histórica")
 st.title("📈 Volatilidad Histórica del Mercado")
 
 ticker = st.text_input("Instrumento (Ticker)", value="SPY")
-ventana_vol = st.number_input("Ventana de Volatilidad (días)", min_value=5, max_value=252, value=21)
+ventana_vol = st.number_input("Ventana de Volatilidad (días - default 21)", min_value=5, max_value=252, value=21)
 anio_inicio = st.number_input("Año de Inicio", min_value=2000, max_value=datetime.today().year, value=2020)
 
 # --- Función para obtener datos ---
