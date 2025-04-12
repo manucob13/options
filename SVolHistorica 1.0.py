@@ -51,6 +51,7 @@ monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
 monthly_vol.columns = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
                        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Anual']
 
+# --- Mostrar tabla con formato HTML ---
 st.subheader("📊 Volatilidad Mensual y Anual Promedio")
 
 # Crear tabla HTML estilizada
@@ -66,7 +67,6 @@ styled_table = (
 # Mostrarla como HTML para evitar scroll y respetar layout='centered'
 st.markdown(styled_table, unsafe_allow_html=True)
 
-
 # --- Crear monthly_long ---
 monthly_long = monthly_vol.reset_index().melt(id_vars=['year'], value_vars=monthly_vol.columns[:-1])
 monthly_long.columns = ['year', 'Mes', 'Volatilidad']
@@ -76,10 +76,6 @@ monthly_long['Mes'] = pd.Categorical(monthly_long['Mes'], categories=orden_meses
 # --- Promedio mensual continuo
 vol_mm = data['vol'].resample('ME').mean()
 vol_mm = vol_mm[vol_mm.index >= f"{anio_inicio}-01-01"]
-
-# --- Tabla con los promedios
-st.subheader("📊 Volatilidad Mensual y Anual Promedio")
-st.dataframe(monthly_vol.style.format("{:.2%}"), use_container_width=True)
 
 # --- Gráfico 1: Volatilidad Anual ---
 fig1, ax1 = plt.subplots(figsize=(12, 7))
@@ -131,3 +127,4 @@ ax4.set_ylabel('Precio de Cierre')
 ax4.grid(axis='y', linestyle='--', alpha=0.6)
 plt.xticks(rotation=45)
 st.pyplot(fig4)
+
