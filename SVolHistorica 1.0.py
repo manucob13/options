@@ -93,7 +93,6 @@ for year in anios_previos:
     ax2.plot(df_linea['Mes'], df_linea['Volatilidad'], marker='o', label=str(year),
              color=colores[year], linewidth=2)
 ax2.set_title(f'Volatilidad Mensual ({ventana_vol}d) - {ticker} {anio_inicio}-Today', fontsize=16)
-ax2.set_xlabel('Mes')
 ax2.set_ylabel('Volatilidad Promedio (%)')
 ax2.legend(title='Año', bbox_to_anchor=(1.05, 1), loc='upper left')
 ax2.grid(axis='y', linestyle='--', alpha=0.6)
