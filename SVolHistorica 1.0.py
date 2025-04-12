@@ -51,16 +51,11 @@ monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
 monthly_vol.columns = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
                        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Anual']
 
-# --- Mostrar tabla con formato HTML ---
-st.subheader("📊 Volatilidad Mensual y Anual Promedio")
-
-# Crear tabla HTML estilizada con gradiente de azul a verde y rojo
+# Crear tabla HTML estilizada con fondo blanco
 styled_table = (
     monthly_vol.style
         .format("{:.2%}")
-        .highlight_max(axis=1, color='lightgreen')
-        .background_gradient(cmap='RdYlBu', axis=None)  # Usamos 'RdYlBu' (rojo a azul)
-        .set_table_attributes('style="width:100%;border-collapse:collapse;font-size:14px;"')
+        .set_table_attributes('style="width:100%;border-collapse:collapse;font-size:14px; background-color: white;"')
         .to_html()
 )
 
