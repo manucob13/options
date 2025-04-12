@@ -62,7 +62,7 @@ vol_mm = data['vol'].resample('ME').mean()
 vol_mm = vol_mm[vol_mm.index >= f"{anio_inicio}-01-01"]
 
 # --- Gráfico 1: Volatilidad Anual ---
-fig1, ax1 = plt.subplots(figsize=(6, 3))
+fig1, ax1 = plt.subplots(figsize=(12, 3))
 monthly_vol['Anual'] = pd.to_numeric(monthly_vol['Anual'], errors='coerce')
 monthly_vol['Anual'].dropna().plot(kind='bar', color='steelblue', ax=ax1)
 ax1.set_title(f'Volatilidad Anual Promedio ({ventana_vol}d) - {ticker} {anio_inicio}-Today')
