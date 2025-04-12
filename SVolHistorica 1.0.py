@@ -22,7 +22,6 @@ anio_inicio = st.number_input("Año de Inicio", min_value=2000, max_value=dateti
 def market_data(ticker, start_date, end_date, interval='1d'):
     df = yf.download(ticker, start=start_date, end=end_date, interval=interval, auto_adjust=False)
 
-    # Si el resultado tiene múltiples columnas (MultiIndex), toma solo 'Close'
     if isinstance(df.columns, pd.MultiIndex):
         df = df['Close']
     else:
@@ -46,11 +45,15 @@ data['month'] = data.index.month
 # --- Volatilidad mensual y anual ---
 monthly_vol = data[data['year'] >= anio_inicio].groupby(['year', 'month'])['vol'].mean().unstack()
 annual_vol = data[data['year'] >= anio_inicio].groupby('year')['vol'].mean()
-monthly_vol['Anual'] = annual_vol
-monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12,'Anual']]
+
+monthly_vol = monthly_vol[[1,2,3,4,5,6,7,8,9,10,11,12]]  # Ordenar los meses
+monthly_vol['Anual'] = annual_vol  # Añadir columna anual
+
+# Renombrar columnas
 monthly_vol.columns = ['En', 'Fe', 'Mr', 'Ab', 'My', 'Jn', 
                        'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc', 'Anual']
 
+# Mostrar tabla
 st.dataframe(monthly_vol.style.format("{:.2f}"), use_container_width=True)
 
 # --- Crear monthly_long ---
@@ -113,4 +116,3 @@ ax4.set_ylabel('Precio de Cierre')
 ax4.grid(axis='y', linestyle='--', alpha=0.6)
 plt.xticks(rotation=45)
 st.pyplot(fig4)
-
