@@ -20,8 +20,16 @@ anio_inicio = st.number_input("Año de Inicio", min_value=2000, max_value=dateti
 # --- Función para obtener datos ---
 @st.cache_data
 def market_data(ticker, start_date, end_date, interval='1d'):
-    df = yf.download(ticker, start=start_date, end=end_date, interval=interval)
-    return df['Close'].to_frame(name=ticker)
+    df = yf.download(ticker, start=start_date, end=end_date, interval=interval, auto_adjust=False)
+
+    # Si el resultado tiene múltiples columnas (MultiIndex), toma solo 'Close'
+    if isinstance(df.columns, pd.MultiIndex):
+        df = df['Close']
+    else:
+        df = df[['Close']]
+
+    df = df.rename(columns={"Close": ticker})
+    return df
 
 # --- Obtener datos ---
 start_date = f"{anio_inicio}-01-01"
