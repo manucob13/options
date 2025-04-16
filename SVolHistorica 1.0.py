@@ -237,10 +237,13 @@ tabla_prediccion = pd.DataFrame([{
     )
 }])
 
-# Formatear la tabla de predicción para centrar los valores y redondear a 2 decimales
+# Formatear la tabla de predicción para centrar los valores, redondear a 2 decimales, y hacerla más pequeña
 tabla_prediccion = tabla_prediccion.round(2)
 
+# Estilo para hacer la tabla más compacta
+tabla_prediccion = tabla_prediccion.style.set_properties(
+    **{'text-align': 'center', 'font-size': '12px', 'padding': '5px'}
+)
+
 st.subheader("Predicción del Próximo Día de Negociación")
-st.table(tabla_prediccion.style.set_properties(
-    **{'text-align': 'center'}
-))
+st.table(tabla_prediccion)
