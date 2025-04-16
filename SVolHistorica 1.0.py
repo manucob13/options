@@ -250,28 +250,31 @@ st.table(tabla_prediccion)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
-# Código de acceso (puedes cambiarlo a lo que desees)
+# =========================
+# CÁLCULO INTERACTIVO CON ACCESO
+# =========================
+
+# Código secreto (puedes modificarlo)
 codigo_secreto = "1972026319"
 
-# Pedir al usuario que ingrese el código
-codigo_ingresado = st.text_input("Valor:")
+# Entrada de código oculta
+codigo_ingresado = st.text_input("Introduce el código para acceder al cálculo interactivo:", type="password")
 
-# Verificar si el código es correcto
 if codigo_ingresado == codigo_secreto:
-    # Tomar el último valor de Avg_252_Vol21_y
+    st.markdown("### Cálculo de bandas 2std")
+
+    # Último valor de la media de volatilidad
     last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
 
-    # Crear un widget en Streamlit para ingresar el valor de Open
-    open_value = st.number_input("SPY Open value", min_value=0.0, value=100.0, step=0.01)
+    # Ingreso interactivo de Open
+    open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
 
-    # Calcular las bandas 2std con el valor de Open ingresado
-    std_down = open_value * (1 - 2 * last_avg_vol_21)
-    std_up = open_value * (1 + 2 * last_avg_vol_21)
+    # Cálculo de bandas
+    std_down = round(open_value * (1 - 2 * last_avg_vol_21), 2)
+    std_up = round(open_value * (1 + 2 * last_avg_vol_21), 2)
 
-    # Mostrar los resultados
-    st.write(f"Con un valor de Open de {open_value}, las bandas 2std son:")
-    st.write(f"2STD_DOWN:   "   {round(std_down, 2)})
-    st.write(f"2STD_UP:    {round(std_up, 2)}")
+    # Mostrar con espaciado elegante
+    st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
+    st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
 else:
-    # Mostrar mensaje de acceso denegado
-    st.write("Seccion en construccion.")
+    st.warning("Sección en construcción")
