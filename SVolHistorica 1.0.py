@@ -121,7 +121,7 @@ st.pyplot(fig4)
 ########################### BACKTESTING & PREDICTION ###############
 # --- Cálculos adicionales y Backtesting ---
 
-import talib as ta
+import ta
 from datetime import timedelta
 
 # Definir fechas (último año)
