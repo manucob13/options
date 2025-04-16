@@ -203,7 +203,9 @@ resumen['Winrate(%)'] = round(
     (resumen['Aciertos'] / resumen['Total_Días']) * 100, 2
 )
 
-# Formatear la tabla para centrar los valores
+# Formatear la tabla para centrar los valores y redondear a 2 decimales
+resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
+
 st.subheader("Resumen de Backtesting")
 st.table(resumen.style.set_properties(
     **{'text-align': 'center'}
@@ -235,14 +237,10 @@ tabla_prediccion = pd.DataFrame([{
     )
 }])
 
-# Formatear la tabla de predicción para centrar los valores
+# Formatear la tabla de predicción para centrar los valores y redondear a 2 decimales
+tabla_prediccion = tabla_prediccion.round(2)
+
 st.subheader("Predicción del Próximo Día de Negociación")
 st.table(tabla_prediccion.style.set_properties(
     **{'text-align': 'center'}
 ))
-
-
-
-
-
-
