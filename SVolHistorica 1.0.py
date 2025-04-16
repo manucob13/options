@@ -199,13 +199,15 @@ resumen = df_final.groupby('1_TREND')['Within_2std_252d'].agg(
 ).reset_index()
 
 resumen['Fallos'] = resumen['Total_Días'] - resumen['Aciertos']
-resumen['Porcentaje Acierto (%)'] = round(
+resumen['Winrate(%)'] = round(
     (resumen['Aciertos'] / resumen['Total_Días']) * 100, 2
 )
 
-# Mostrar resumen en tabla
+# Formatear la tabla para centrar los valores
 st.subheader("Resumen de Backtesting")
-st.table(resumen)
+st.table(resumen.style.set_properties(
+    **{'text-align': 'center'}
+))
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -233,9 +235,11 @@ tabla_prediccion = pd.DataFrame([{
     )
 }])
 
-# Mostrar predicción en tabla
+# Formatear la tabla de predicción para centrar los valores
 st.subheader("Predicción del Próximo Día de Negociación")
-st.table(tabla_prediccion)
+st.table(tabla_prediccion.style.set_properties(
+    **{'text-align': 'center'}
+))
 
 
 
