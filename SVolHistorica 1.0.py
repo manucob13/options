@@ -118,6 +118,17 @@ ax4.grid(axis='y', linestyle='--', alpha=0.6)
 plt.xticks(rotation=45)
 st.pyplot(fig4)
 
+# --- Grafico 5: Vix 
+fig5, ax5 = plt.subplots(figsize=(6, 3))
+data = market_data("VIX", start_date, end_date)
+data_vix = data[data['year'] >= anio_inicio]
+ax5.plot(data_vix.index, data_vix['VIX'], color='darkred', linewidth=1, alpha=0.8)
+ax5.set_title(f'VIX {anio_inicio}-Today', fontsize=16)
+ax5.set_ylabel('Volatilidad (VIX)')
+ax5.grid(axis='y', linestyle='--', alpha=0.6)
+plt.xticks(rotation=45)
+st.pyplot(fig5)
+
 ########################### BACKTESTING & PREDICTION ###############
 # --- Cálculos adicionales y Backtesting ---
 
