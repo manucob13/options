@@ -270,7 +270,7 @@ if codigo_ingresado == codigo_secreto:
 
     # Mostrar los resultados
     st.write(f"Con un valor de Open de {open_value}, las bandas 2std son:")
-    st.write(f"2STD_DOWN:    {round(std_down, 2)}")
+    st.write(f"2STD_DOWN:   "   {round(std_down, 2)})
     st.write(f"2STD_UP:    {round(std_up, 2)}")
 else:
     # Mostrar mensaje de acceso denegado
