@@ -250,17 +250,28 @@ st.table(tabla_prediccion)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
-# Tomar el último valor de Avg_252_Vol21_y
-last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
+# Código de acceso (puedes cambiarlo a lo que desees)
+codigo_secreto = "1972026319"
 
-# Crear un widget en Streamlit para ingresar el valor de Open
-open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
+# Pedir al usuario que ingrese el código
+codigo_ingresado = st.text_input("Valor:")
 
-# Calcular las bandas 2std con el valor de Open ingresado
-std_down = open_value * (1 - 2 * last_avg_vol_21)
-std_up = open_value * (1 + 2 * last_avg_vol_21)
+# Verificar si el código es correcto
+if codigo_ingresado == codigo_secreto:
+    # Tomar el último valor de Avg_252_Vol21_y
+    last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
 
-# Mostrar los resultados
-st.write(f"Con un valor de Open de {open_value}, las bandas 2std son:")
-st.write(f"2std_DOWN: {round(std_down, 2)}")
-st.write(f"2std_UP: {round(std_up, 2)}")
+    # Crear un widget en Streamlit para ingresar el valor de Open
+    open_value = st.number_input("SPY Open value", min_value=0.0, value=100.0, step=0.01)
+
+    # Calcular las bandas 2std con el valor de Open ingresado
+    std_down = open_value * (1 - 2 * last_avg_vol_21)
+    std_up = open_value * (1 + 2 * last_avg_vol_21)
+
+    # Mostrar los resultados
+    st.write(f"Con un valor de Open de {open_value}, las bandas 2std son:")
+    st.write(f"2std_DOWN: {round(std_down, 2)}")
+    st.write(f"2std_UP: {round(std_up, 2)}")
+else:
+    # Mostrar mensaje de acceso denegado
+    st.write("Por favor, introduce el código correcto para acceder a esta sección.")
