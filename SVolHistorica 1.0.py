@@ -210,18 +210,18 @@ df_final = df[
     df['3_VIX_WMA']
 ].copy()
 
-resumen = df_final.groupby('TREND')['Within_2std_252d'].agg(
-    Dias='count',
+resumen = df_final.groupby('1_TREND')['Within_2std_252d'].agg(
+    Total_Días='count',
     Aciertos='sum'
 ).reset_index()
 
-resumen['Fallos'] = resumen['Dias'] - resumen['Aciertos']
+resumen['Fallos'] = resumen['Total_Días'] - resumen['Aciertos']
 resumen['Winrate(%)'] = round(
-    (resumen['Aciertos'] / resumen['Dias']) * 100, 2
+    (resumen['Aciertos'] / resumen['Total_Días']) * 100, 2
 )
 
 # Formatear la tabla para centrar los valores y redondear a 2 decimales
-resumen = resumen.round({'Dias': 2, 'Aciertos': 2, 'Winrate(%)': 2})
+resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 
 st.subheader("Resumen de Backtesting")
 st.table(resumen.style.set_properties(
