@@ -210,12 +210,12 @@ df_final = df[
     df['3_VIX_WMA']
 ].copy()
 
-resumen = df_final.groupby('1_TREND')['Within_2std_252d'].agg(
+resumen = df_final.groupby('TREND')['Within_2std_252d'].agg(
     Total_Días='count',
     Aciertos='sum'
 ).reset_index()
 
-resumen['Fallos'] = resumen['Total_Días'] - resumen['Aciertos']
+resumen['Fallos'] = resumen['Dias'] - resumen['Aciertos']
 resumen['Winrate(%)'] = round(
     (resumen['Aciertos'] / resumen['Total_Días']) * 100, 2
 )
