@@ -274,4 +274,4 @@ if codigo_ingresado == codigo_secreto:
     st.write(f"2std_UP: {round(std_up, 2)}")
 else:
     # Mostrar mensaje de acceso denegado
-    st.write("Por favor, introduce el código correcto para acceder a esta sección.")
+    st.write("Seccion en construccion.")
