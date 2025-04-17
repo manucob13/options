@@ -206,7 +206,7 @@ df['Within_2std_252d'] = (df['Close'] >= df['2std_DW']) & (df['Close'] <= df['2s
 
 # Filtrar las condiciones
 df_final = df[
-    df['2_VIX25']
+    df['2_VIX25'] & df['3_VIX_WMA']
 ].copy()
 
 resumen = df_final.groupby('1_TREND')['Within_2std_252d'].agg(
