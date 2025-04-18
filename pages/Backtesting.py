@@ -100,7 +100,7 @@ styled_resumen = resumen.style.set_properties(**{'text-align': 'center'})
 
 # Mostrar la tabla de resumen sin el índice
 st.subheader("Resumen de Backtesting")
-st.dataframe(resumen, use_container_width=True)
+st.table(resumen)
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -137,7 +137,7 @@ tabla_prediccion = tabla_prediccion.style.set_properties(
 )
 
 st.subheader("Predicción del Próximo Día de Negociación")
-st.dataframe(tabla_prediccion, width=1200, use_container_width=True)
+st.table(tabla_prediccion)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
