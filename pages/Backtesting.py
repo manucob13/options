@@ -98,7 +98,7 @@ resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 st.subheader("Resumen de Backtesting")
 st.dataframe(resumen.style.set_properties(
     **{'text-align': 'center'}
-),width=1200)
+).hide_index(),use_container_width=True)
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -135,7 +135,7 @@ tabla_prediccion = tabla_prediccion.style.set_properties(
 )
 
 st.subheader("Predicción del Próximo Día de Negociación")
-st.dataframe(tabla_prediccion,width=1200)
+st.dataframe(tabla_prediccion,width=1200, use_container_width=True)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
