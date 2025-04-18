@@ -11,7 +11,7 @@ sns.set_theme(style='whitegrid')
 st.set_page_config(layout="centered", page_title="Volatilidad Histórica")
 
 # --- Entradas de usuario ---
-st.title("📈 Vol. Histórica del Mercado")
+st.title("📈 Vol. Histórica Metodo Simple: Close")
 
 ticker = st.text_input("Instrumento (Ticker)", value="SPY")
 ventana_vol = st.number_input("Ventana de Volatilidad (días - default 21)", min_value=5, max_value=252, value=21)
