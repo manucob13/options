@@ -10,7 +10,7 @@ start_date = "2010-01-01"
 end_date = datetime.today().strftime('%Y-%m-%d')
 
 # --- Descargar datos de SPY ---
-tickers = ["SPY"]
+tickers = ["^GSPC"]
 df_spy = yf.download(tickers, start=start_date, end=end_date, auto_adjust=False, multi_level_index=False)
 df_spy['WMA_30'] = ta.trend.WMAIndicator(close=df_spy['Close'], window=30).wma()
 df_spy['log_return'] = np.log(df_spy['Close'] / df_spy['Close'].shift(1))
