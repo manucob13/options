@@ -147,7 +147,7 @@ if codigo_ingresado == codigo_secreto:
     open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
     std_down = round(open_value * (1 - 2 * last_avg_vol_21), 2)
     std_up = round(open_value * (1 + 2 * last_avg_vol_21), 2)
-    st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
-    st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
+    st.markdown(f"**BAND DOWN:**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
+    st.markdown(f"**BAND UP:**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
 else:
     st.warning("Sección en construcción")
