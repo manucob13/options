@@ -2,8 +2,6 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import ta
 from datetime import datetime, timedelta
 
@@ -95,14 +93,14 @@ resumen['Winrate(%)'] = round(
 resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 
 # Eliminar el índice
-resumen_sin_indice = resumen.reset_index(drop=True)
+resumen = resumen.reset_index(drop=True)
 
 # Estilizar la tabla
-styled_resumen = resumen_sin_indice.style.set_properties(**{'text-align': 'center'})
+styled_resumen = resumen.style.set_properties(**{'text-align': 'center'})
 
 # Mostrar la tabla de resumen sin el índice
 st.subheader("Resumen de Backtesting")
-st.dataframe(styled_resumen, use_container_width=True)
+st.dataframe(resumen, use_container_width=True)
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -131,15 +129,15 @@ tabla_prediccion = pd.DataFrame([{
 }])
 
 # Eliminar el índice
-tabla_prediccion_sin_indice = tabla_prediccion.reset_index(drop=True)
+tabla_prediccion = tabla_prediccion.reset_index(drop=True)
 
 # Estilo para hacer la tabla más compacta
-tabla_prediccion_sin_indice = tabla_prediccion_sin_indice.style.set_properties(
+tabla_prediccion = tabla_prediccion.style.set_properties(
     **{'text-align': 'center', 'font-size': '12px', 'padding': '5px'}
 )
 
 st.subheader("Predicción del Próximo Día de Negociación")
-st.dataframe(tabla_prediccion_sin_indice, width=1200, use_container_width=True)
+st.dataframe(tabla_prediccion, width=1200, use_container_width=True)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
