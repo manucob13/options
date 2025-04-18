@@ -5,11 +5,11 @@ import numpy as np
 import ta
 from datetime import datetime, timedelta
 
+# Configurar página en modo ancho
+st.set_page_config(layout="wide")
+
 ########################### BACKTESTING 
 # --- Cálculos adicionales y Backtesting ---
-
-import ta
-from datetime import timedelta
 
 # Definir fechas (último año)
 start_date = "2010-01-01"
@@ -89,15 +89,30 @@ resumen['Winrate(%)'] = round(
     (resumen['Aciertos'] / resumen['Total_Días']) * 100, 2
 )
 
-# Formatear la tabla para centrar los valores y redondear a 2 decimales
-resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
+# Estilos CSS personalizados
+styles = [
+    dict(selector="th", props=[("text-align", "center"),
+                               ("font-size", "14px"),
+                               ("background-color", "#f0f2f6"),
+                               ("font-weight", "bold")]),
+    dict(selector="td", props=[("text-align", "center"),
+                               ("font-size", "14px")]),
+    dict(selector="table", props=[("margin-left", "auto"),
+                                  ("margin-right", "auto"),
+                                  ("width", "100%"),
+                                  ("min-width", "100%")]),
+    dict(selector=".col_heading", props=[("text-align", "center")]),
+    dict(selector=".row_heading", props=[("display", "none")])
+]
 
-# Eliminar el índice (esto es la clave)
-resumen = resumen.reset_index(drop=True)
-
-# Mostrar la tabla de resumen sin el índice usando st.dataframe
+# Mostrar tabla de resumen
 st.subheader("Resumen de Backtesting")
-st.dataframe(resumen, hide_index=True)  # Modificación aquí
+styled_resumen = (resumen.style
+                  .set_table_styles(styles)
+                  .hide_index()
+                  .format({'Winrate(%)': '{:.2f}%'})
+                  .set_properties(**{'white-space': 'nowrap'}))
+st.write(styled_resumen.to_html(), unsafe_allow_html=True)
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -118,19 +133,20 @@ tabla_prediccion = pd.DataFrame([{
     'Tendencia': 'Alcista' if last_row['Close_y'] > last_row['SP500_WMA_30_y'] else 'Bajista',
     'Last VIX': round(last_row['VIX_C_y'], 2),
     'Last VIX_WMA_21': round(last_row['VIX_WMA_21_y'], 2),
-    'VIX < 25': 'True' if last_row['VIX_C_y'] <= 25 else 'False',  # Convertir a string 'True'/'False'
+    'VIX < 25': 'True' if last_row['VIX_C_y'] <= 25 else 'False',
     'VIX < Last 1-2 WMA21': 'True' if (
         last_row['VIX_C_y'] < last_row['VIX_WMA_21_y'] and 
         last_row['VIX_WMA_21_y'] < last_row['VIX_WMA_21_2dy']
-    ) else 'False'  # Convertir a string 'True'/'False'
+    ) else 'False'
 }])
 
-# Eliminar el índice
-tabla_prediccion = tabla_prediccion.reset_index(drop=True)
-
-# Mostrar la tabla de predicción sin índice usando st.dataframe
+# Mostrar tabla de predicción
 st.subheader("Predicción del Próximo Día de Negociación")
-st.dataframe(tabla_prediccion, hide_index=True)  # Modificación aquí
+styled_prediccion = (tabla_prediccion.style
+                     .set_table_styles(styles)
+                     .hide_index()
+                     .set_properties(**{'white-space': 'nowrap'}))
+st.write(styled_prediccion.to_html(), unsafe_allow_html=True)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
@@ -158,7 +174,7 @@ if codigo_ingresado == codigo_secreto:
     std_up = round(open_value * (1 + 2 * last_avg_vol_21), 2)
 
     # Mostrar con espaciado elegante
-    st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
-    st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
+    st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;`{std_down}`")
+    st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`{std_up}`")
 else:
     st.warning("Sección en construcción")
