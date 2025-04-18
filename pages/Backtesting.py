@@ -42,8 +42,8 @@ df['VIX_WMA_21_2dy'] = df['VIX_WMA_21'].shift(2)
 df = df.dropna()
 
 # --- Calcular bandas 2STD ---
-df['2std_DW'] = df[''] * (1 - 2 * df['Avg_252_Vol21_y'])
-df['2std_UP'] = df[''] * (1 + 2 * df['Avg_252_Vol21_y'])
+df['2std_DW'] = df['Open'] * (1 - 2 * df['Avg_252_Vol21_y'])
+df['2std_UP'] = df['Open'] * (1 + 2 * df['Avg_252_Vol21_y'])
 
 # --- Condiciones ---
 df['TREND'] = np.where(df['Close_y'] > df['SP500_WMA_30_y'], 'Alcista', 'Bajista')
@@ -140,7 +140,7 @@ st.markdown(tabla_html, unsafe_allow_html=True)
 # --- Cono de probabilidad ---
 st.subheader("Cono de Probabilidad")
 last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
-open_value = st.number_input("Ejemplo: O_Valor", min_value=0.0, value=100.0, step=0.01)
+open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
 std_down = round(open_value * (1 - 2 * last_avg_vol_21), 2)
 std_up = round(open_value * (1 + 2 * last_avg_vol_21), 2)
 st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
