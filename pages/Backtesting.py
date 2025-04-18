@@ -142,7 +142,7 @@ codigo_secreto = "1972026319"
 codigo_ingresado = st.text_input("Introduce el código para acceder al cálculo interactivo:", type="password")
 
 if codigo_ingresado == codigo_secreto:
-    st.markdown("### Cálculo de bandas 2std")
+    st.markdown("### Bandas")
     last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
     open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
     std_down = round(open_value * (1 - 2 * last_avg_vol_21), 2)
