@@ -98,7 +98,8 @@ resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 st.subheader("Resumen de Backtesting")
 st.dataframe(resumen.style.set_properties(
     **{'text-align': 'center'}
-).hide_index(),use_container_width=True)
+).hide_index()
+st.dataframe(styled_resumen,,use_container_width=True)
 
 # --- Predicción del Próximo Día de Negociación ---
 
