@@ -97,8 +97,10 @@ resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 
 # Mostrar la tabla sin el índice y redondeada
 st.subheader("Resumen de Backtesting")
-styled_resumen = resumen.style.set_properties(**{'text-align': 'center'}).hide_index()
-st.dataframe(styled_resumen, use_container_width=True)
+# Eliminar el índice
+resumen_sin_indice = resumen.reset_index(drop=True)
+# Estilizar la tabla
+styled_resumen = resumen_sin_indice.style.set_properties(**{'text-align': 'center'})
 
 # --- Predicción del Próximo Día de Negociación ---
 
