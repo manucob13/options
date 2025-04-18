@@ -134,7 +134,7 @@ tabla_html = f"""
 """
 
 # --- Mostrar tabla de predicción ---
-st.subheader("Predicción del Próximo Día de Negociación")
+st.subheader("Predicción")
 st.markdown(tabla_html, unsafe_allow_html=True)
 
 # --- Cálculo de bandas con código secreto ---
