@@ -95,9 +95,9 @@ resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 # Eliminar el índice (esto es la clave)
 resumen = resumen.reset_index(drop=True)
 
-# Mostrar la tabla de resumen sin el índice usando st.write
+# Mostrar la tabla de resumen sin el índice usando st.dataframe
 st.subheader("Resumen de Backtesting")
-st.write(resumen.to_string(index=False))
+st.dataframe(resumen)
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -128,9 +128,9 @@ tabla_prediccion = pd.DataFrame([{
 # Eliminar el índice
 tabla_prediccion = tabla_prediccion.reset_index(drop=True)
 
-# Mostrar la tabla de predicción sin índice usando st.write
+# Mostrar la tabla de predicción sin índice usando st.dataframe
 st.subheader("Predicción del Próximo Día de Negociación")
-st.write(tabla_prediccion.to_string(index=False))
+st.dataframe(tabla_prediccion)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
