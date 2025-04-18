@@ -97,7 +97,7 @@ resumen = resumen.reset_index(drop=True)
 
 # Mostrar la tabla de resumen sin el índice usando st.dataframe
 st.subheader("Resumen de Backtesting")
-st.dataframe(resumen)
+st.dataframe(resumen, hide_index=True)  # Modificación aquí
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -130,7 +130,7 @@ tabla_prediccion = tabla_prediccion.reset_index(drop=True)
 
 # Mostrar la tabla de predicción sin índice usando st.dataframe
 st.subheader("Predicción del Próximo Día de Negociación")
-st.dataframe(tabla_prediccion)
+st.dataframe(tabla_prediccion, hide_index=True)  # Modificación aquí
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
