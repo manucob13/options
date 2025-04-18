@@ -95,11 +95,10 @@ resumen['Winrate(%)'] = round(
 # Formatear la tabla para centrar los valores y redondear a 2 decimales
 resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 
+# Mostrar la tabla sin el índice y redondeada
 st.subheader("Resumen de Backtesting")
-st.dataframe(resumen.style.set_properties(
-    **{'text-align': 'center'}
-).hide_index()
-st.dataframe(styled_resumen,,use_container_width=True)
+styled_resumen = resumen.style.set_properties(**{'text-align': 'center'}).hide_index()
+st.dataframe(styled_resumen, use_container_width=True)
 
 # --- Predicción del Próximo Día de Negociación ---
 
