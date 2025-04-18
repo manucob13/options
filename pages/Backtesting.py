@@ -1,4 +1,3 @@
-
 import streamlit as st
 import yfinance as yf
 import pandas as pd
@@ -95,12 +94,17 @@ resumen['Winrate(%)'] = round(
 # Formatear la tabla para centrar los valores y redondear a 2 decimales
 resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
 
-# Mostrar la tabla sin el índice y redondeada
+# Mostrar la tabla de resumen sin el índice y redondeada
 st.subheader("Resumen de Backtesting")
+
 # Eliminar el índice
 resumen_sin_indice = resumen.reset_index(drop=True)
+
 # Estilizar la tabla
 styled_resumen = resumen_sin_indice.style.set_properties(**{'text-align': 'center'})
+
+# Mostrar la tabla de resumen sin el índice
+st.dataframe(styled_resumen, use_container_width=True)
 
 # --- Predicción del Próximo Día de Negociación ---
 
@@ -121,11 +125,11 @@ tabla_prediccion = pd.DataFrame([{
     'Tendencia': 'Alcista' if last_row['Close_y'] > last_row['SP500_WMA_30_y'] else 'Bajista',
     'Last VIX': round(last_row['VIX_C_y'], 2),
     'Last VIX_WMA_21': round(last_row['VIX_WMA_21_y'], 2),
-    'VIX < 25': last_row['VIX_C_y'] <= 25,
-    'VIX < Last 1-2 WMA21': (
+    'VIX < 25': 'True' if last_row['VIX_C_y'] <= 25 else 'False',  # Convertir a string 'True'/'False'
+    'VIX < Last 1-2 WMA21': 'True' if (
         last_row['VIX_C_y'] < last_row['VIX_WMA_21_y'] and 
         last_row['VIX_WMA_21_y'] < last_row['VIX_WMA_21_2dy']
-    )
+    ) else 'False'  # Convertir a string 'True'/'False'
 }])
 
 # Formatear la tabla de predicción para centrar los valores, redondear a 2 decimales, y hacerla más pequeña
@@ -137,7 +141,7 @@ tabla_prediccion = tabla_prediccion.style.set_properties(
 )
 
 st.subheader("Predicción del Próximo Día de Negociación")
-st.dataframe(tabla_prediccion,width=1200, use_container_width=True)
+st.dataframe(tabla_prediccion, width=1200, use_container_width=True)
 
 ### TOOL CALCULAR BANDAS SUPERIOR E INFERIOR
 
@@ -169,8 +173,3 @@ if codigo_ingresado == codigo_secreto:
     st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
 else:
     st.warning("Sección en construcción")
-
-
-
-
-
