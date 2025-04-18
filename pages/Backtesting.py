@@ -80,7 +80,7 @@ st.markdown(
     .styled-table th, .styled-table td {
         border: 1px solid #ddd;
         padding: 6px 10px;
-        text-align: center;
+        text-align: left;
         white-space: nowrap;
     }
     .styled-table th {
@@ -137,17 +137,11 @@ tabla_html = f"""
 st.subheader("Predicción del Próximo Día de Negociación")
 st.markdown(tabla_html, unsafe_allow_html=True)
 
-# --- Cálculo de bandas con código secreto ---
-codigo_secreto = "1972026319"
-codigo_ingresado = st.text_input("Introduce el código para acceder al cálculo interactivo:", type="password")
-
-if codigo_ingresado == codigo_secreto:
-    st.markdown("### Cálculo de bandas 2std")
-    last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
-    open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
-    std_down = round(open_value * (1 - 2 * last_avg_vol_21), 2)
-    std_up = round(open_value * (1 + 2 * last_avg_vol_21), 2)
-    st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
-    st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
-else:
-    st.warning("Sección en construcción")
+# --- Cono de probabilidad ---
+st.subheader("Cono de Probabilidad")
+last_avg_vol_21 = df['Avg_252_Vol21_y'].iloc[-1]
+open_value = st.number_input("Introduce el valor de Open", min_value=0.0, value=100.0, step=0.01)
+std_down = round(open_value * (1 - 2 * last_avg_vol_21), 2)
+std_up = round(open_value * (1 + 2 * last_avg_vol_21), 2)
+st.markdown(f"**2STD_DOWN**&nbsp;&nbsp;&nbsp;&nbsp;{std_down}")
+st.markdown(f"**2STD_UP**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{std_up}")
