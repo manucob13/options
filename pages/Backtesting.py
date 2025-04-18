@@ -57,87 +57,87 @@ df['Within_2std_252d'] = (df['Close'] >= df['2std_DW']) & (df['Close'] <= df['2s
 # --- Filtrar y agrupar ---
 df_final = df[df['2_VIX25'] & df['3_VIX_WMA']].copy()
 
-# --- Resumen de Backtesting (comentado) ---
-# resumen = df_final.groupby('TREND')['Within_2std_252d'].agg(
-#     Total_Días='count',
-#     Aciertos='sum'
-# ).reset_index()
-# resumen['Fallos'] = resumen['Total_Días'] - resumen['Aciertos']
-# resumen['Winrate(%)'] = round((resumen['Aciertos'] / resumen['Total_Días']) * 100, 2)
-# resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
-# resumen = resumen.reset_index(drop=True)
+# --- Resumen de Backtesting ---
+resumen = df_final.groupby('TREND')['Within_2std_252d'].agg(
+    Total_Días='count',
+    Aciertos='sum'
+).reset_index()
+resumen['Fallos'] = resumen['Total_Días'] - resumen['Aciertos']
+resumen['Winrate(%)'] = round((resumen['Aciertos'] / resumen['Total_Días']) * 100, 2)
+resumen = resumen.round({'Total_Días': 2, 'Aciertos': 2, 'Winrate(%)': 2})
+resumen = resumen.reset_index(drop=True)
 
-# --- Mostrar tabla resumen con estilo HTML (comentado) ---
-# st.subheader("Resumen de Backtesting")
-# resumen_html = resumen.to_html(index=False, classes='styled-table')
-# st.markdown(
-#     """
-#     <style>
-#     .styled-table {
-#         border-collapse: collapse;
-#         margin: 0 auto;
-#         font-size: 14px;
-#         width: auto;
-#     }
-#     .styled-table th, .styled-table td {
-#         border: 1px solid #ddd;
-#         padding: 6px 10px;
-#         text-align: left;
-#         white-space: nowrap;
-#     }
-#     .styled-table th {
-#         background-color: #000000;
-#         color: white;
-#     }
-#     </style>
-#     """, unsafe_allow_html=True
-# )
-# st.markdown(resumen_html, unsafe_allow_html=True)
+# --- Mostrar tabla resumen con estilo HTML ---
+st.subheader("Resumen de Backtesting")
+resumen_html = resumen.to_html(index=False, classes='styled-table')
+st.markdown(
+    """
+    <style>
+    .styled-table {
+        border-collapse: collapse;
+        margin: 0 auto;
+        font-size: 14px;
+        width: auto;
+    }
+    .styled-table th, .styled-table td {
+        border: 1px solid #ddd;
+        padding: 6px 10px;
+        text-align: left;
+        white-space: nowrap;
+    }
+    .styled-table th {
+        background-color: #000000;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+st.markdown(resumen_html, unsafe_allow_html=True)
 
-# --- Predicción del siguiente día (comentado) ---
-# last_row = df.iloc[-1]
-# last_date = df.index[-1]
-# next_business_day = last_date + timedelta(days=1)
-# while next_business_day.weekday() >= 5:
-#     next_business_day += timedelta(days=1)
+# --- Predicción del siguiente día ---
+last_row = df.iloc[-1]
+last_date = df.index[-1]
+next_business_day = last_date + timedelta(days=1)
+while next_business_day.weekday() >= 5:
+    next_business_day += timedelta(days=1)
 
-# --- Preparar tabla con HTML coloreado (comentado) ---
-# tendencia_color = 'green' if last_row['Close_y'] > last_row['SP500_WMA_30_y'] else 'red'
-# vix25_color = 'green' if last_row['VIX_C_y'] <= 25 else 'red'
-# vix_wma_color = 'green' if (last_row['VIX_C_y'] < last_row['VIX_WMA_21_y']) and (last_row['VIX_WMA_21_y'] < last_row['VIX_WMA_21_2dy']) else 'red'
+# --- Preparar tabla con HTML coloreado ---
+tendencia_color = 'green' if last_row['Close_y'] > last_row['SP500_WMA_30_y'] else 'red'
+vix25_color = 'green' if last_row['VIX_C_y'] <= 25 else 'red'
+vix_wma_color = 'green' if (last_row['VIX_C_y'] < last_row['VIX_WMA_21_y']) and (last_row['VIX_WMA_21_y'] < last_row['VIX_WMA_21_2dy']) else 'red'
 
-# tabla_html = f"""
-# <table class='styled-table'>
-#     <thead>
-#         <tr>
-#             <th>New Date</th>
-#             <th>Last Close</th>
-#             <th>Last SP500_WMA_30</th>
-#             <th>Tendencia</th>
-#             <th>Last VIX</th>
-#             <th>Last VIX_WMA_21</th>
-#             <th>VIX &lt; 25</th>
-#             <th>VIX &lt; Last 1-2 WMA21</th>
-#         </tr>
-#     </thead>
-#     <tbody>
-#         <tr>
-#             <td>{next_business_day.strftime('%Y-%m-%d')}</td>
-#             <td>{round(last_row['Close_y'], 2)}</td>
-#             <td>{round(last_row['SP500_WMA_30_y'], 2)}</td>
-#             <td style="color:{tendencia_color}; font-weight: bold">{'Alcista' if tendencia_color == 'green' else 'Bajista'}</td>
-#             <td>{round(last_row['VIX_C_y'], 2)}</td>
-#             <td>{round(last_row['VIX_WMA_21_y'], 2)}</td>
-#             <td style="color:{vix25_color}; font-weight: bold">{'True' if vix25_color == 'green' else 'False'}</td>
-#             <td style="color:{vix_wma_color}; font-weight: bold">{'True' if vix_wma_color == 'green' else 'False'}</td>
-#         </tr>
-#     </tbody>
-# </table>
-# """
+tabla_html = f"""
+<table class='styled-table'>
+    <thead>
+        <tr>
+            <th>New Date</th>
+            <th>Last Close</th>
+            <th>Last SP500_WMA_30</th>
+            <th>Tendencia</th>
+            <th>Last VIX</th>
+            <th>Last VIX_WMA_21</th>
+            <th>VIX &lt; 25</th>
+            <th>VIX &lt; Last 1-2 WMA21</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{next_business_day.strftime('%Y-%m-%d')}</td>
+            <td>{round(last_row['Close_y'], 2)}</td>
+            <td>{round(last_row['SP500_WMA_30_y'], 2)}</td>
+            <td style="color:{tendencia_color}; font-weight: bold">{'Alcista' if tendencia_color == 'green' else 'Bajista'}</td>
+            <td>{round(last_row['VIX_C_y'], 2)}</td>
+            <td>{round(last_row['VIX_WMA_21_y'], 2)}</td>
+            <td style="color:{vix25_color}; font-weight: bold">{'True' if vix25_color == 'green' else 'False'}</td>
+            <td style="color:{vix_wma_color}; font-weight: bold">{'True' if vix_wma_color == 'green' else 'False'}</td>
+        </tr>
+    </tbody>
+</table>
+"""
 
-# --- Mostrar tabla de predicción (comentado) ---
-# st.subheader("Predicción del Próximo Día de Negociación")
-# st.markdown(tabla_html, unsafe_allow_html=True)
+# --- Mostrar tabla de predicción ---
+st.subheader("Predicción del Próximo Día de Negociación")
+st.markdown(tabla_html, unsafe_allow_html=True)
 
 # --- Cono de probabilidad ---
 st.subheader("Cono de Probabilidad")
