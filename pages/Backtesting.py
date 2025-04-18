@@ -84,7 +84,8 @@ st.markdown(
         white-space: nowrap;
     }
     .styled-table th {
-        background-color: #f2f2f2;
+        background-color: #000000;
+        color: white;
     }
     </style>
     """, unsafe_allow_html=True
