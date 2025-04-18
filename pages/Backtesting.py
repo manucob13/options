@@ -99,25 +99,43 @@ next_business_day = last_date + timedelta(days=1)
 while next_business_day.weekday() >= 5:
     next_business_day += timedelta(days=1)
 
-tabla_prediccion = pd.DataFrame([{
-    'New Date': next_business_day.strftime('%Y-%m-%d'),
-    'Last Close': round(last_row['Close_y'], 2),
-    'Last SP500_WMA_30': round(last_row['SP500_WMA_30_y'], 2),
-    'Tendencia': 'Alcista' if last_row['Close_y'] > last_row['SP500_WMA_30_y'] else 'Bajista',
-    'Last VIX': round(last_row['VIX_C_y'], 2),
-    'Last VIX_WMA_21': round(last_row['VIX_WMA_21_y'], 2),
-    'VIX < 25': 'True' if last_row['VIX_C_y'] <= 25 else 'False',
-    'VIX < Last 1-2 WMA21': 'True' if (
-        last_row['VIX_C_y'] < last_row['VIX_WMA_21_y'] and 
-        last_row['VIX_WMA_21_y'] < last_row['VIX_WMA_21_2dy']
-    ) else 'False'
-}])
-tabla_prediccion = tabla_prediccion.reset_index(drop=True)
+# --- Preparar tabla con HTML coloreado ---
+tendencia_color = 'green' if last_row['Close_y'] > last_row['SP500_WMA_30_y'] else 'red'
+vix25_color = 'green' if last_row['VIX_C_y'] <= 25 else 'red'
+vix_wma_color = 'green' if (last_row['VIX_C_y'] < last_row['VIX_WMA_21_y']) and (last_row['VIX_WMA_21_y'] < last_row['VIX_WMA_21_2dy']) else 'red'
 
-# --- Mostrar predicción con estilo HTML ---
+tabla_html = f"""
+<table class='styled-table'>
+    <thead>
+        <tr>
+            <th>New Date</th>
+            <th>Last Close</th>
+            <th>Last SP500_WMA_30</th>
+            <th>Tendencia</th>
+            <th>Last VIX</th>
+            <th>Last VIX_WMA_21</th>
+            <th>VIX &lt; 25</th>
+            <th>VIX &lt; Last 1-2 WMA21</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{next_business_day.strftime('%Y-%m-%d')}</td>
+            <td>{round(last_row['Close_y'], 2)}</td>
+            <td>{round(last_row['SP500_WMA_30_y'], 2)}</td>
+            <td style="color:{tendencia_color}; font-weight: bold">{'Alcista' if tendencia_color == 'green' else 'Bajista'}</td>
+            <td>{round(last_row['VIX_C_y'], 2)}</td>
+            <td>{round(last_row['VIX_WMA_21_y'], 2)}</td>
+            <td style="color:{vix25_color}; font-weight: bold">{'True' if vix25_color == 'green' else 'False'}</td>
+            <td style="color:{vix_wma_color}; font-weight: bold">{'True' if vix_wma_color == 'green' else 'False'}</td>
+        </tr>
+    </tbody>
+</table>
+"""
+
+# --- Mostrar tabla de predicción ---
 st.subheader("Predicción del Próximo Día de Negociación")
-prediccion_html = tabla_prediccion.to_html(index=False, classes='styled-table')
-st.markdown(prediccion_html, unsafe_allow_html=True)
+st.markdown(tabla_html, unsafe_allow_html=True)
 
 # --- Cálculo de bandas con código secreto ---
 codigo_secreto = "1972026319"
